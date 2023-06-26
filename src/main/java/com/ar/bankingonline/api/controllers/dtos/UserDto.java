@@ -1,15 +1,11 @@
-package com.ar.bankingonline.models.dtos;
+package com.ar.bankingonline.api.controllers.dtos;
 
 import lombok.*;
 
-@Builder
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode
+@Data
 public class UserDto {
     //trabajamos con los datos que traemos de la base de datos
+    public UserDto(){}
 
     private Integer id;
 
