@@ -1,10 +1,13 @@
 package com.ar.bankingonline.api.controllers;
 
-import com.ar.bankingonline.api.controllers.dtos.AccountDto;
+import com.ar.bankingonline.api.dtos.AccountDto;
 import com.ar.bankingonline.application.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 
 @RestController
@@ -25,9 +28,25 @@ public class AccountController {
         return ResponseEntity.status(200).body(accounts);
     }
 
+    @GetMapping(value = "/accounts/{id}")
+    public ResponseEntity<AccountDto> getAccountById(@PathVariable Long id){
+        AccountDto account = service.getAccountById(id);
+        return ResponseEntity.status(200).body(account);
+    }
+
     @PostMapping(value = "/accounts")
     public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto dto){
-        return ResponseEntity.status(201).body(service.createAccount(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createAccount(dto));
+    }
+
+    @PutMapping(value = "/accounts/{id}")
+    public ResponseEntity<AccountDto> updateAccount(@PathVariable Long id, @RequestBody AccountDto account) throws AccountNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(service.updateAccount(id, account));
+    }
+
+    @DeleteMapping(value = "/accounts/{id}")
+    public ResponseEntity<String> deleteAccount(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(service.deleteAccount(id));
     }
 
 }

@@ -17,6 +17,8 @@ public class Account {
 
     private BigDecimal amount;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User owner;
 
 }

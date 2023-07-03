@@ -1,11 +1,12 @@
 package com.ar.bankingonline.api.controllers;
 
-import com.ar.bankingonline.api.controllers.dtos.UserDto;
+import com.ar.bankingonline.api.dtos.UserDto;
 import com.ar.bankingonline.application.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 
 @RestController
@@ -28,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/users/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Integer id){
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id){
         return ResponseEntity.status(200).body(service.getUserById(id));
     }
 
@@ -37,15 +38,14 @@ public class UserController {
         return ResponseEntity.status(201).body(service.createUser(dto));
     }
 
-    @PutMapping(value = "/users")
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto user){
-        return ResponseEntity.status(200).body(service.update(user));
+    @PutMapping(value = "/users/{id}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto user) throws AccountNotFoundException {
+        return ResponseEntity.status(200).body(service.update(id, user));
     }
 
     @DeleteMapping(value = "/users/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Integer id){
-        service.delete(id);
-        return ResponseEntity.status(200).body("Se ha eliminado el usuario exitosamente");
+    public ResponseEntity<String> deleteUser(@PathVariable Long id){
+        return ResponseEntity.status(200).body(service.delete(id));
     }
 
 }
