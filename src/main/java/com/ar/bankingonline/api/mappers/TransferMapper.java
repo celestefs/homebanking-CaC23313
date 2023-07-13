@@ -16,9 +16,8 @@ public class TransferMapper {
         return transfer;
     }
 
-    public TransferDto TransferToDto(Transfer transfer){
+    public TransferDto transferToDto(Transfer transfer){
         TransferDto dto = new TransferDto();
-
         dto.setDate(transfer.getDate());
         dto.setOrigin(transfer.getOrigin());
         dto.setTarget(transfer.getTarget());

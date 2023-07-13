@@ -1,15 +1,18 @@
 package com.ar.bankingonline.api.dtos;
 
 import lombok.*;
+import java.util.List;
 
 @Data
 public class UserDto {
-    //trabajamos con los datos que traemos de la base de datos
+
     public UserDto(){}
 
-    private Integer id;
+    private Long id;
 
     private String username;
 
     private String password;
+
+    private List<Long> idAccounts;
 }

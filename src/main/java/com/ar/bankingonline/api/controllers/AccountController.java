@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 
 @RestController
@@ -25,13 +24,13 @@ public class AccountController {
 
         List<AccountDto> accounts = service.getAccounts();
 
-        return ResponseEntity.status(200).body(accounts);
+        return ResponseEntity.status(HttpStatus.OK).body(accounts);
     }
 
     @GetMapping(value = "/accounts/{id}")
     public ResponseEntity<AccountDto> getAccountById(@PathVariable Long id){
         AccountDto account = service.getAccountById(id);
-        return ResponseEntity.status(200).body(account);
+        return ResponseEntity.status(HttpStatus.OK).body(account);
     }
 
     @PostMapping(value = "/accounts")
@@ -40,7 +39,7 @@ public class AccountController {
     }
 
     @PutMapping(value = "/accounts/{id}")
-    public ResponseEntity<AccountDto> updateAccount(@PathVariable Long id, @RequestBody AccountDto account) throws AccountNotFoundException {
+    public ResponseEntity<AccountDto> updateAccount(@PathVariable Long id, @RequestBody AccountDto account) {
         return ResponseEntity.status(HttpStatus.OK).body(service.updateAccount(id, account));
     }
 
