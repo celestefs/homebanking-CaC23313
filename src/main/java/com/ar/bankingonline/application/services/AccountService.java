@@ -35,6 +35,7 @@ public class AccountService {
                 .map(AccountMapper::AccountToDto)
                 .collect(Collectors.toList());
     }
+
     @Transactional
     public AccountDto createAccount(AccountDto account){
         Optional<User> user = userRepository.findById(account.getOwner().getId());
@@ -50,20 +51,32 @@ public class AccountService {
         AccountDto account = AccountMapper.AccountToDto(repository.findById(id).get());
         return account;
     }
+
     @Transactional
     public AccountDto updateAccount(Long id, AccountDto account)  {
         Optional<Account> accountCreated = repository.findById(id);
 
         if(accountCreated.isPresent()){
             Account entity = accountCreated.get();
-            Account accountUpdated = AccountMapper.dtoToAccount(account);
-            accountUpdated.setId(entity.getId());
-            Account saved = repository.save(accountUpdated);
+
+            if (account.getAmount()!=null){
+                entity.setBalance(account.getAmount());
+            }
+            if(account.getOwner()!=null){
+                User user = userRepository.getReferenceById(account.getOwner().getId());
+                if (user!=null){
+                    entity.setOwner(user);
+                }
+            }
+
+            Account saved = repository.save(entity);
+
             return AccountMapper.AccountToDto(saved);
         } else {
-        throw new AccountNotFoundException("User not found with id: " + id);
+            throw new AccountNotFoundException("Account not found with id: " + id);
+        }
     }
-    }
+
     @Transactional
     public String deleteAccount(Long id){
 

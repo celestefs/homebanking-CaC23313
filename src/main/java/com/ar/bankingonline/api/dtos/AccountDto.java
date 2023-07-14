@@ -1,6 +1,5 @@
 package com.ar.bankingonline.api.dtos;
 
-import com.ar.bankingonline.domain.models.User;
 import lombok.Data;
 import java.math.BigDecimal;
 

@@ -1,7 +1,7 @@
 package com.ar.bankingonline.application.services;
 
 import com.ar.bankingonline.api.mappers.UserMapper;
-import com.ar.bankingonline.domain.exceptions.AccountNotFoundException;
+import com.ar.bankingonline.domain.exceptions.UserNotFoundException;
 import com.ar.bankingonline.domain.models.Account;
 import com.ar.bankingonline.domain.models.User;
 import com.ar.bankingonline.api.dtos.UserDto;
@@ -34,7 +34,9 @@ public class UserService {
     }
 
     public UserDto getUserById(Long id){
-        return UserMapper.userMapToDto(repository.findById(id).get());
+        User user = repository.findById(id).orElseThrow(() ->
+                new UserNotFoundException("User not found with id: " + id));
+        return UserMapper.userMapToDto(user);
     }
 
     public UserDto createUser(UserDto user){
@@ -63,7 +65,7 @@ public class UserService {
 
             return UserMapper.userMapToDto(saved);
         } else {
-            throw new AccountNotFoundException("User not found with id: " + id);
+            throw new UserNotFoundException("User not found with id: " + id);
         }
     }
 
